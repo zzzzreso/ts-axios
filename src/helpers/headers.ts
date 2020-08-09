@@ -1,4 +1,5 @@
-import { isObject } from './util'
+import { isObject, deepMerge } from './util'
+import { Method } from '../types'
 
 function normalizeName(headers:any, normalizedName: string):void {
   if(!headers) {
@@ -11,7 +12,6 @@ function normalizeName(headers:any, normalizedName: string):void {
     }
   })
 }
-
 
 export function processHeaders(headers: any, data: any): any {
   normalizeName(headers, 'Content-Type')
@@ -37,4 +37,21 @@ export function parseHeaders(headers: string): any {
     }
   })
   return parsed
+}
+
+export function flattenHeaders(headers: any, method: Method): any {
+  if(!headers) {
+    return headers
+  }
+  // 提取可能存在的common，method对象中的属性
+  headers = deepMerge(headers.common, headers[method], headers)
+  
+  const methodsToDelete = ['get', 'post', 'put', 'delete', 'options', 
+  'patch', 'head', 'common']
+
+  methodsToDelete.forEach( key => {
+    delete headers[key]
+  })
+
+  return headers
 }
