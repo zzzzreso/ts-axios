@@ -8,7 +8,7 @@ import {
 } from '../types'
 import dispatchRequest, { transformURL } from './dispatchRequest'
 import InterceptorManager from '../core/InterceptorManager'
-import { mergeConfig } from './mergeConfig'
+import mergeConfig from './mergeConfig'
 
 interface Interceptors {
   request: InterceptorManager<AxiosRequestConfig>
@@ -43,7 +43,9 @@ export default class Axios {
       config = url
     }
     // 合并配置
+    console.dir(mergeConfig)
     config = mergeConfig(this.defaults, config)
+    config.method = config.method.toLowerCase()
 
     // 将调用use存储的拦截器再存储进来
     // 初始数据是发送http请求

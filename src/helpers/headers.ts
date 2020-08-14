@@ -1,12 +1,12 @@
 import { isObject, deepMerge } from './util'
 import { Method } from '../types'
 
-function normalizeName(headers:any, normalizedName: string):void {
-  if(!headers) {
+function normalizeName(headers: any, normalizedName: string): void {
+  if (!headers) {
     return
   }
   Object.keys(headers).forEach(name => {
-    if(name !== normalizedName && name.toUpperCase() === normalizedName.toUpperCase()) {
+    if (name !== normalizedName && name.toUpperCase() === normalizedName.toUpperCase()) {
       headers[normalizedName] = headers[name]
       delete headers[name]
     }
@@ -15,8 +15,8 @@ function normalizeName(headers:any, normalizedName: string):void {
 
 export function processHeaders(headers: any, data: any): any {
   normalizeName(headers, 'Content-Type')
-  if(isObject(data)) {
-    if(headers && !headers['Content-Type']) {
+  if (isObject(data)) {
+    if (headers && !headers['Content-Type']) {
       headers['Content-Type'] = 'application/json;charset=utf-8'
     }
   }
@@ -25,31 +25,32 @@ export function processHeaders(headers: any, data: any): any {
 
 export function parseHeaders(headers: string): any {
   let parsed = Object.create(null)
-  let arr = headers.split('\r\n').map(it => it.split(': '))
+  if(!headers) {
+    return parsed
+  }
+  let arr = headers.split('\r\n').map(it => it.split(':'))
   arr.forEach(item => {
-    let [key, val] = item
+    let [key, ...vals] = item
     key = key.trim().toLowerCase()
-    if(!key) {
+    if (!key) {
       return
     }
-    if(val) {
-      parsed[key] = val.trim()
-    }
+    let val = vals.join(':').trim()
+    parsed[key] = val
   })
   return parsed
 }
 
 export function flattenHeaders(headers: any, method: Method): any {
-  if(!headers) {
+  if (!headers) {
     return headers
   }
   // 提取可能存在的common，method对象中的属性
   headers = deepMerge(headers.common, headers[method], headers)
-  
-  const methodsToDelete = ['get', 'post', 'put', 'delete', 'options', 
-  'patch', 'head', 'common']
 
-  methodsToDelete.forEach( key => {
+  const methodsToDelete = ['get', 'post', 'put', 'delete', 'options', 'patch', 'head', 'common']
+
+  methodsToDelete.forEach(key => {
     delete headers[key]
   })
 

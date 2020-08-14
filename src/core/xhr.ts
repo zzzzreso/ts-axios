@@ -9,9 +9,9 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
     const {
       url,
-      method = 'get',
+      method,
       data,
-      headers,
+      headers = {},
       responseType,
       timeout,
       cancelToken,
@@ -26,7 +26,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     const request = new XMLHttpRequest()
 
-    request.open(method.toUpperCase(), url!, true)
+    request.open(method!.toUpperCase(), url!, true)
 
     configureRequest()
 
@@ -63,7 +63,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         }
         // 获取响应头和响应数据，构造出所需的response对象
         const responseHeaders = parseHeaders(request.getAllResponseHeaders())
-        const responseData = responseType !== 'text' ? request.response : request.responseText
+        const responseData =
+          responseType && responseType !== 'text' ? request.response : request.responseText
         const response: AxiosResponse = {
           data: responseData,
           status: request.status,
@@ -76,7 +77,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       }
 
       request.onerror = function handleError() {
-        reject(createError('NetWork fail', config, null, request))
+        reject(createError('Network Error', config, null, request))
       }
 
       request.ontimeout = function() {
@@ -111,7 +112,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
       // 遍历headers，设置请求头
       Object.keys(headers).forEach(name => {
-        if (data === null && name.toLowerCase() === 'content-type') {
+        if (data == null && name.toLowerCase() === 'content-type') {
           delete headers[name]
         } else {
           request.setRequestHeader(name, headers[name])

@@ -61,53 +61,57 @@ import axios from '../../src/index'
 //   }
 // })
 
-axios({
-  method:'post',
-  url: '/base/post',
-  data: {
-    a: 1,
-    b: 2,
-  }
-})
+// axios({
+//   method: 'post',
+//   url: '/base/post',
+//   data: {
+//     a: 1,
+//     b: 2
+//   }
+// })
 
-const arr = new Int32Array([32, 21])
+// const arr = new Int32Array([32, 21])
 
-axios({
-  method:'post',
-  url: '/base/buffer',
-  data: arr,
-  params: {
-    foo: [1,2,3],
-    bar: 'fdfd'
-  }
-}).then( res => {
-  console.log(res)
-})
+// axios({
+//   method: 'post',
+//   url: '/base/buffer',
+//   data: arr,
+//   params: {
+//     foo: [1, 2, 3],
+//     bar: 'fdfd'
+//   }
+// }).then(res => {
+//   console.log(res)
+// })
 
-axios({
-  method: 'post',
-  url: '/base/post',
-  responseType: 'json',
-  headers: {
-    'content-type': 'application/json;charset=utf-8',
-    'Accept': 'application/json, text/plain, */*'
-  },
-  data: {
-    a: 1,
-    b: 2
-  }
-}).then(res => {
-  console.log(res)
-})
+// axios({
+//   method: 'post',
+//   url: '/base/post',
+//   responseType: 'json',
+//   headers: {
+//     'content-type': 'application/json;charset=utf-8',
+//     Accept: 'application/json, text/plain, */*'
+//   },
+//   data: {
+//     a: 1,
+//     b: 2
+//   }
+// }).then(res => {
+//   console.log(res)
+// })
 
-const paramsString = 'q=URLUtils.searchParams&topic=api'
-const searchParams = new URLSearchParams(paramsString )
+// const paramsString = 'q=URLUtils.searchParams&topic=api'
+// const searchParams = new URLSearchParams(paramsString)
 
-// 传入URLSearchParams对象，浏览器会自动添加请求头，为其设置正确的格式
-axios({
-  method: 'post',
-  url: '/base/post',
-  data: searchParams 
-}).then(res => {
+// // 传入URLSearchParams对象，浏览器会自动添加请求头，为其设置正确的格式
+// axios({
+//   method: 'post',
+//   url: '/base/post',
+//   data: searchParams
+// }).then(res => {
+//   console.log(res)
+// })
+
+axios.post('/base/post').then(res => {
   console.log(res)
 })

@@ -72,11 +72,11 @@ export function buildURL(
 }
 
 export function isAbsoluteURL(url: string): boolean {
-  return /(^[a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
+  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
 }
 
 export function combineURL(baseURL: string, combineURL?: string): string {
-  return combineURL ? baseURL.replace(/\/+&/, '') + '/' + combineURL.replace(/^\/+/, '') : baseURL
+  return combineURL ? baseURL.replace(/\/+$/, '') + '/' + combineURL.replace(/^\/+/, '') : baseURL
 }
 
 export function isURLSameOrigin(requestURL: string): boolean {

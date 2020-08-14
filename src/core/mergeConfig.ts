@@ -26,7 +26,7 @@ function deepMergeStrat(val1: any, val2: any): any {
     return val2
   } else if (isObject(val1)) {
     return deepMerge(val1)
-  } else if (typeof val1 !== 'undefined') {
+  } else {
     return val1
   }
 }
@@ -36,13 +36,14 @@ stratKeysDeepMerge.forEach(key => {
   strats[key] = deepMergeStrat
 })
 
-export function mergeConfig(
+export default function mergeConfig(
   config1: AxiosRequestConfig,
   config2?: AxiosRequestConfig
 ): AxiosRequestConfig {
   if (!config2) {
     config2 = {}
   }
+  
   const config = Object.create(null)
   for (let key in config2) {
     mergeField(key)
@@ -54,13 +55,11 @@ export function mergeConfig(
     }
   }
   
-  // console.log('合并的config \n', config1, config2)
-  
   function mergeField(key: string): void {
     const strat = strats[key] || defaultStrat
-
     config[key] = strat(config1[key], config2![key])
   }
 
   return config
 }
+

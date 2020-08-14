@@ -2,7 +2,7 @@ import Axios from './core/Axios'
 import { AxiosRequestConfig, AxiosStatic } from './types/index'
 import { extend } from './helpers/util'
 import defaults from './defaults'
-import { mergeConfig } from './core/mergeConfig'
+import mergeConfig from './core/mergeConfig'
 import CancelToken from './cancel/CancelToken'
 import Cancel, { isCancel } from './cancel/Cancel'
 
@@ -26,5 +26,6 @@ axios.CancelToken = CancelToken
 axios.Cancel = Cancel
 axios.isCancel = isCancel
 
-console.dir(axios)
+axios.Axios = Axios
+
 export default axios
